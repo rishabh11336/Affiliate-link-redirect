@@ -1,0 +1,45 @@
+name: Sync Submodules
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Every day at midnight UTC
+  workflow_dispatch: # Allow manual trigger from GitHub Actions UI
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Update submodules to latest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout parent repo with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update all submodules to latest remote
+        run: git submodule update --remote --merge
+
+      - name: Check for changes and commit
+        run: |
+          if git diff --quiet; then
+            echo "✅ All submodules are already up to date."
+          else
+            echo "🔄 Submodule changes detected — committing..."
+            git add -A
+            git commit -m "chore: sync submodules to latest upstream commits"
+            git push
+            echo "✅ Changes pushed successfully."
+          fi
+
+      - name: Show submodule status
+        run: git submodule status
