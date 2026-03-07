@@ -1,0 +1,9 @@
+[submodule "punji_the_labrador_backend"]
+	path = punji_the_labrador_backend
+	url = https://github.com/rishabh11336/punji_the_labrador_backend.git
+[submodule "Punji_The_Labrador"]
+	path = Punji_The_Labrador
+	url = https://github.com/rishabh11336/Punji_The_Labrador.git
+[submodule "Punji_The_Labrador_Images-JSON"]
+	path = Punji_The_Labrador_Images-JSON
+	url = https://github.com/rishabh11336/Punji_The_Labrador_Images-JSON.git
